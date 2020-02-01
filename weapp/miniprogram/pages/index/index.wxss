@@ -1,0 +1,22 @@
+/**index.wxss**/
+@import '/style/weui-searchbar.wxss';
+
+.list {
+  position: relative;
+  padding: 8px;
+}
+
+.poi-status {
+  display: flex;
+  align-items: center;
+}
+
+.poi-status-left {
+  flex: 1;
+  text-align: left;
+}
+
+.poi-status-right {
+  flex: 1;
+  text-align: right;
+}
