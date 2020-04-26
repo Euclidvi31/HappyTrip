@@ -14,28 +14,37 @@
       <view class="poi__footer">浦东新区 @ 2020年2月2日 下午2:40</view>
     </view>
 
-    <view class="weui-form-preview__ft">
+    <!-- <view class="weui-form-preview__ft">
       <picker class="time__picker" mode="date" value="{{date}}" start="2015-09-01" end="2017-09-01" bindchange="bindDateChange">
         <!-- <button class="weui-form-preview__btn weui-form-preview__btn_primary" type="default">日期选择器</button> -->
-        <navigator url="" class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active">客流预估</navigator>
+        <!-- <navigator url="" class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active">客流预估</navigator>
       </picker>
-    </view>
+    </view> -->
   </view>
 
   <view class="data__panel">
-    <view class="data__one">
-      <view class="data__header">
-          <view class="data__content">2020年10月1日</view>
-      </view>
-      <view class="data__body">50000人</view>
-    </view>
     <view class="graph__panel">
       <view class="data__header">
-          <view class="data__content">历史</view>
+          <view class="data__content">历史3天</view>
       </view>
       <view class="container">
         <ff-canvas id="column-dom" canvas-id="column" opts="{{ opts }}"></ff-canvas>
       </view>
+    </view>
+  </view>
+
+  <view class="data__panel">
+    <view class="data__header">
+      <view class="data__content">预估</view>
+    </view>
+    <view class="container">
+      <picker class="picker" mode="date" value="{{date}}" start="2015-09-01" end="2017-09-01" bindchange="bindDateChange">
+        <view style="float: left;margin-right: 1em;min-width: 60%;text-align: justify;text-align-last: justify;">{{date}}</view>
+        <view>20000人</view>
+      </picker>
+    </view>
+    <view>
+      <button>开始预估</button>
     </view>
   </view>
 </view>

@@ -5,14 +5,11 @@ let chart = null;
 
 function initChart(canvas, width, height, F2) { // 使用 F2 绘制图表
   const data = [
-    { year: '1951 年', sales: 38 },
-    { year: '1952 年', sales: 52 },
-    { year: '1956 年', sales: 61 },
-    { year: '1957 年', sales: 145 },
-    { year: '1958 年', sales: 48 },
-    { year: '1959 年', sales: 38 },
-    { year: '1960 年', sales: 38 },
-    { year: '1962 年', sales: 38 },
+    { date: '4月1日', total: 20000 },
+    { date: '4月2日', total: 25000 },
+    { date: '4月3日', total: 30000 },
+    { date: '4月4日', total: 28000 },
+    { date: '4月5日', total: 10000 },
   ];
   chart = new F2.Chart({
     el: canvas,
@@ -31,10 +28,10 @@ function initChart(canvas, width, height, F2) { // 使用 F2 绘制图表
       const { items } = ev;
       items[0].name = null;
       items[0].name = items[0].title;
-      items[0].value = '¥ ' + items[0].value;
+      items[0].value = items[0].value + '人';
     }
   });
-  chart.interval().position('year*sales');
+  chart.interval().position('date*total');
   chart.render();
   return chart;
 }
@@ -47,7 +44,8 @@ Page({
   data: {
     opts: {
       onInit: initChart
-    }
+    },
+    date: new Date().toJSON().slice(0, 10)
   },
 
   /**
