@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace HappyTripCrawler
+namespace HappyTrip.Crawler
 {
     public class TrafficCrawler
 	{
