@@ -53,6 +53,7 @@ namespace HappyTrip.Crawler
                         existingPoi.Initial = poi.Initial;
                         existingPoi.StartTime = poi.StartTime;
                         existingPoi.EndTime = poi.EndTime;
+                        existingPoi.Comfort = poi.Comfort;
                     }
                     else
                     {
