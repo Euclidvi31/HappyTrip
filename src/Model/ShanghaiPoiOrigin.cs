@@ -60,5 +60,9 @@ namespace HappyTrip.Model
         // END_TIME
         [JsonPropertyName("END_TIME")]
         public string EndTime { get; set; }
+
+        // SSD
+        [JsonPropertyName("SSD")]
+        public string Comfort { get; set; }
     }
 }

@@ -16,7 +16,7 @@
     <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="hideInput">取消</view>
   </view>
   <view class="list">
-    <i-card id="1" title="迪士尼乐园" extra="1小时前" thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
+    <!-- <i-card id="1" title="迪士尼乐园" extra="1小时前" thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
       <view slot="content">2007人 / 140650 人</view>
       <view slot="footer">浦东新区</view>
     </i-card>
@@ -26,6 +26,15 @@
         <view class="poi-status-right">舒适</view>
       </view>
       <view slot="footer">浦东新区</view>
-    </i-card>
+    </i-card> -->
+    <view wx:for="{{pois}}" wx:key="id">
+      <i-card id="{{item.id}}" title="{{item.name}}" extra="1小时前" bindtap="openCard">
+        <view slot="content" class="poi-status">
+          <view class="poi-status-left">{{item.trafficNumber}}人 / {{item.maxTrafficNumber}} 人</view>
+          <view class="poi-status-right">{{item.comfort}}</view>
+        </view>
+        <view slot="footer">{{item.county}}</view>
+      </i-card>
+    </view>
   </view>
 </view>

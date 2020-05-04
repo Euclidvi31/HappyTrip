@@ -4,20 +4,37 @@ const app = getApp()
 Page({
   data: {
     inputShowed: false,
-    inputVal: ""
+    inputVal: "",
+    pois:[]
   },
 
   onLoad: function() {
+    this.loadData();
   },
 
   showInput: function() {
-    console.info("showInput");
   },
 
   openCard: function(e)
   {
     wx.navigateTo({
       url: '/pages/poi/poi?id=' + e.currentTarget.id,
+    })
+  },
+
+  loadData: function() {
+    var self = this;
+    wx.request({
+      url: 'https://happytripservice.azurewebsites.net/api/poi',
+      header: {
+        'content-type': 'application/json' 
+      },
+      success(res) {
+        // console.log(res.data.value);
+        self.setData({
+          'pois': res.data.value
+        });
+      }
     })
   },
 })

@@ -49,5 +49,9 @@ namespace HappyTrip.Model
         // END_TIME
         [MaxLength(10)]
         public string EndTime { get; set; }
+
+        // SSD
+        [MaxLength(8)]
+        public string Comfort { get; set; }
     }
 }
