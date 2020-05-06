@@ -28,8 +28,24 @@ var timeChn = function (val) {
   }
 };
 
+var getColor = function (val) {
+  if (val < 50)
+  {
+    return '#39b54a';
+  }
+  else if (val < 75)
+  {
+    return '#fbbd08';
+  }
+  else
+  {
+    return '#e54d42';
+  }
+}
+
 module.exports = {
-  timeChn: timeChn
+  timeChn: timeChn,
+  getColor: getColor
 }
 </wxs>
 
@@ -65,7 +81,12 @@ module.exports = {
     <view wx:for="{{pois}}" wx:key="id">
       <i-card id="{{item.id}}" title="{{item.name}}" extra="{{m1.timeChn(item.refreshAt)}}" bindtap="openCard" >
         <view slot="content" class="poi-status">
-          <view class="poi-status-left">{{item.trafficNumber}}人 / {{item.maxTrafficNumber}} 人</view>
+          <!-- <view class="poi-status-left">{{item.trafficNumber}}人 / {{item.maxTrafficNumber}} 人</view> -->
+          <view class="poi-status-left">
+            <view class="poi-progress">
+              <view class="poi-progress-color" style="width:{{item.trafficNumber*100/item.maxTrafficNumber}}%;background-color:{{m1.getColor(item.trafficNumber*100/item.maxTrafficNumber)}};"></view>
+            </view>
+          </view>
           <view class="poi-status-right">{{item.comfort}}</view>
         </view>
         <view slot="footer">{{item.county}}</view>

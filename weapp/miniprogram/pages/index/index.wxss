@@ -14,9 +14,26 @@
 .poi-status-left {
   flex: 1;
   text-align: left;
+  min-width: 80%;
 }
 
 .poi-status-right {
   flex: 1;
   text-align: right;
+}
+
+.poi-progress {
+  align-items: center;
+  width: 100%;
+  border-radius: 6rpx;
+  background-color: #ebeef5;
+  display: inline-flex;
+  height: 25rpx;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.poi-progress-color {
+  display: flex;
+  height: 100%;
 }
