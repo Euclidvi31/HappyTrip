@@ -2,6 +2,7 @@
 using Azure.Storage.Blobs;
 using HappyTrip.Model;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -62,6 +63,20 @@ namespace HappyTrip.Crawler
                 }
                 await context.SaveChangesAsync();
             }
+        }
+
+        public static async Task<Dictionary<int, PoiHistory>> UpdateHistory(DateTime day)
+        {
+            const string connectionString = "DefaultEndpointsProtocol=https;AccountName=trafficblob;AccountKey=f798gA7BzmMev2qB0HIEuC7rx2uHoHqgWY04lrkvL+WniDX2eg7Zdi4rlOgmMlqh3ZGED9EUMyy4bs5EjnN3+w==;EndpointSuffix=core.windows.net";
+            const string containerName = "traficdata";
+
+            BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+            await containerClient.CreateIfNotExistsAsync();
+            // TimeZoneInfo timeInfo = TimeZoneInfo.FindSystemTimeZoneById("Asia/Shanghai");
+            TimeZoneInfo timeInfo = TimeZoneInfo.CreateCustomTimeZone("ShanghaiTime", new TimeSpan(08, 00, 00), "ShanghaiTime", "ShanghaiTime");
+            string fileName = TimeZoneInfo.ConvertTime(day, timeInfo).ToString("yyyyMMdd");
+
         }
     }
 }
