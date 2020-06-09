@@ -14,7 +14,6 @@ namespace HappyTrip.Crawler
 {
     public class CrawlerStorage
     {
-
         public static async Task SaveToBlob(string data)
         {
             const string connectionString = "DefaultEndpointsProtocol=https;AccountName=trafficblob;AccountKey=f798gA7BzmMev2qB0HIEuC7rx2uHoHqgWY04lrkvL+WniDX2eg7Zdi4rlOgmMlqh3ZGED9EUMyy4bs5EjnN3+w==;EndpointSuffix=core.windows.net";
@@ -66,7 +65,7 @@ namespace HappyTrip.Crawler
             }
         }
 
-        public static async Task<Dictionary<int, PoiHistory>> UpdateHistory(DateTime day)
+        public static async Task UpdateHistory(DateTime day)
         {
             const string connectionString = "DefaultEndpointsProtocol=https;AccountName=trafficblob;AccountKey=f798gA7BzmMev2qB0HIEuC7rx2uHoHqgWY04lrkvL+WniDX2eg7Zdi4rlOgmMlqh3ZGED9EUMyy4bs5EjnN3+w==;EndpointSuffix=core.windows.net";
             const string containerName = "traficdata";
@@ -90,15 +89,15 @@ namespace HappyTrip.Crawler
                 ProcessPois(pois, poiCollection);
             }
 
-            var result = new Dictionary<int, PoiHistory>();
+            var result = new List<PoiHistory>();
             foreach (var item in poiCollection)
             {
                 var poiCode = item.Key;
                 var poiList = item.Value;
                 var history = CalculatePoiHistory(poiCode, poiList, dateInt);
-                result.Add(history.PoiId, history);
+                result.Add(history);
             }
-            return result;
+            await UpdatePoiHistory(result);
         }
 
         private static async Task<Poi[]> GetPoisFromBlob(BlobClient blobClient)
@@ -141,8 +140,34 @@ namespace HappyTrip.Crawler
                 MaxTraffic = pois.Max(p => p.TrafficNumber),
                 MinTraffic = pois.Where(p => p.TrafficNumber > 0).Min(p => p.TrafficNumber),
                 AvgTraffic = (int)pois.Where(p => p.TrafficNumber > 0).Average(p => p.TrafficNumber),
+                TrafficLimit = pois.Max(p => p.MaxTrafficNumber),
             };
             return history;
+        }
+
+        private static async Task UpdatePoiHistory(List<PoiHistory> historys)
+        {
+            using (var context = new PoiContext())
+            {
+                foreach (var history in historys)
+                {
+                    var existing = context.PoiHistory.SingleOrDefault(p => p.PoiId == history.PoiId && p.Date == history.Date);
+                    if (existing != null)
+                    {
+                        existing.MaxTraffic = history.MaxTraffic;
+                        existing.MinTraffic = history.MinTraffic;
+                        existing.AvgTraffic = history.AvgTraffic;
+                        existing.Status = history.Status;
+                        existing.Whether = history.Whether;
+                    }
+                    else
+                    {
+                        context.PoiHistory.Add(history);
+                    }
+                }
+
+                await context.SaveChangesAsync();
+            }
         }
     }
 }

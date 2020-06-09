@@ -5,7 +5,7 @@ using System;
 
 namespace HappyTrip.Function
 {
-    public static class TrafficCrawlerRun
+    public static class TrafficCrawlerFunc
     {
 
         [FunctionName("CrawlerRun")]
