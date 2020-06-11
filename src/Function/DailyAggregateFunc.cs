@@ -8,7 +8,7 @@ namespace HappyTrip.Function
     public static class DailyAggregateFunc
     {
         [FunctionName("AggregateRun")]
-        public static void Run([TimerTrigger("0 30 15 * * *", RunOnStartup = true)]TimerInfo myTimer, ILogger log)
+        public static void Run([TimerTrigger("0 30 15 * * *")]TimerInfo myTimer, ILogger log)
         {
             log.LogInformation($"AggregateRun start at: {DateTime.Now}.");
 
