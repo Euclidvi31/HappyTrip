@@ -10,7 +10,7 @@ namespace HappyTrip.Driver
     {
         static void Main(string[] args)
         {
-            
+            UpdatePoiHistoryFromStartToNow();
         }
 
         private static void GetAndUpdatePoiData()
@@ -24,6 +24,17 @@ namespace HappyTrip.Driver
         private static void GetAndUpdatePoiHistory()
         {
             CrawlerStorage.UpdateHistory(DateTime.UtcNow).ConfigureAwait(false).GetAwaiter().GetResult();
+            Console.WriteLine("Done.");
+        }
+
+        private static void UpdatePoiHistoryFromStartToNow()
+        {
+            var startDate = new DateTime(2020, 1, 14);
+            var endDate = DateTime.UtcNow;
+            for (var date = startDate; date < endDate; date.AddDays(1))
+            {
+                CrawlerStorage.UpdateHistory(DateTime.UtcNow).ConfigureAwait(false).GetAwaiter().GetResult();
+            }
             Console.WriteLine("Done.");
         }
     }

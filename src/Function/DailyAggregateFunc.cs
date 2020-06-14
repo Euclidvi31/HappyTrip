@@ -20,6 +20,7 @@ namespace HappyTrip.Function
             catch (Exception e)
             {
                 log.LogError($"Update to database error, e = {e.ToString()}");
+                throw;
             }
             log.LogInformation($"AggregateRun finish.");
         }

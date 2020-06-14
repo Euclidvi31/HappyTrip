@@ -89,6 +89,11 @@ namespace HappyTrip.Crawler
                 ProcessPois(pois, poiCollection);
             }
 
+            if (poiCollection.Count == 0)
+            {
+                throw new Exception("Cannot get poi collection of the day from blob.");
+            }
+
             var result = new List<PoiHistory>();
             foreach (var item in poiCollection)
             {
@@ -105,11 +110,18 @@ namespace HappyTrip.Crawler
             var configuration = new MapperConfiguration(cfg => cfg.CreateMap<ShanghaiPoiOrigin, Poi>());
             var mapper = configuration.CreateMapper();
             var blobContent = await blobClient.DownloadAsync();
-            using (var s = blobContent.Value.Content)
+            try
             {
-                var poiOrigins = await JsonSerializer.DeserializeAsync<ShanghaiPoiOrigin[]>(s);
-                Poi[] pois = mapper.Map<ShanghaiPoiOrigin[], Poi[]>(poiOrigins);
-                return pois;
+                using (var s = blobContent.Value.Content)
+                {
+                    var poiOrigins = await JsonSerializer.DeserializeAsync<ShanghaiPoiOrigin[]>(s);
+                    Poi[] pois = mapper.Map<ShanghaiPoiOrigin[], Poi[]>(poiOrigins);
+                    return pois;
+                }
+            }
+            catch (Exception)
+            {
+                return new Poi[0];
             }
         }
 
@@ -138,10 +150,14 @@ namespace HappyTrip.Crawler
                 PoiId = poiId,
                 Date = date,
                 MaxTraffic = pois.Max(p => p.TrafficNumber),
-                MinTraffic = pois.Where(p => p.TrafficNumber > 0).Min(p => p.TrafficNumber),
-                AvgTraffic = (int)pois.Where(p => p.TrafficNumber > 0).Average(p => p.TrafficNumber),
+                MinTraffic = pois.Where(p => p.TrafficNumber >= 0).Min(p => p.TrafficNumber),
                 TrafficLimit = pois.Max(p => p.MaxTrafficNumber),
             };
+
+            if (history.MaxTraffic != 0)
+            {
+                history.AvgTraffic = (int)pois.Where(p => p.TrafficNumber > 0).Average(p => p.TrafficNumber);
+            }
             return history;
         }
 
