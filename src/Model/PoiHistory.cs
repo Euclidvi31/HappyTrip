@@ -15,6 +15,8 @@ namespace HappyTrip.Model
 
         public int MaxTraffic { get; set; }
 
+        public int TrafficLimit { get; set; }
+
         [MaxLength(10)]
         public string Status { get; set; }
 

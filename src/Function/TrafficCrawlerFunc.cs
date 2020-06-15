@@ -5,11 +5,11 @@ using System;
 
 namespace HappyTrip.Function
 {
-    public static class TrafficCrawlerRun
+    public static class TrafficCrawlerFunc
     {
 
         [FunctionName("CrawlerRun")]
-        public static void Run([TimerTrigger("0 0 * * * *", RunOnStartup = true)]TimerInfo myTimer, ILogger log)
+        public static void Run([TimerTrigger("0 0 * * * *")]TimerInfo myTimer, ILogger log)
         {
             log.LogInformation($"CrawlerRun start at: {DateTime.Now}.");
 
@@ -23,6 +23,7 @@ namespace HappyTrip.Function
             catch (Exception e)
             {
                 log.LogError($"Save to blob error, e = {e.ToString()}");
+                throw;
             }
 
             try
@@ -33,6 +34,7 @@ namespace HappyTrip.Function
             catch (Exception e)
             {
                 log.LogError($"Update to database error, e = {e.ToString()}");
+                throw;
             }
             log.LogInformation($"CrawlerRun finish.");
         }

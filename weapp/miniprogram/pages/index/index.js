@@ -22,6 +22,11 @@ Page({
     })
   },
 
+  onPullDownRefresh: function () {
+    this.loadData();
+    //console.log("Refresh done.");
+  },
+
   loadData: function() {
     var self = this;
     wx.request({
@@ -30,10 +35,11 @@ Page({
         'content-type': 'application/json' 
       },
       success(res) {
-        // console.log(res.data.value);
+        //console.log(res.data.value);
         self.setData({
           'pois': res.data.value
         });
+        wx.stopPullDownRefresh();
       }
     })
   },
