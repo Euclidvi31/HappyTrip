@@ -31,9 +31,9 @@ namespace HappyTrip.Driver
         {
             var startDate = new DateTime(2020, 1, 14);
             var endDate = DateTime.UtcNow;
-            for (var date = startDate; date < endDate; date.AddDays(1))
+            for (var date = startDate; date < endDate; date = date.AddDays(1))
             {
-                CrawlerStorage.UpdateHistory(DateTime.UtcNow).ConfigureAwait(false).GetAwaiter().GetResult();
+                CrawlerStorage.UpdateHistory(date).ConfigureAwait(false).GetAwaiter().GetResult();
             }
             Console.WriteLine("Done.");
         }
