@@ -29,11 +29,12 @@ namespace HappyTrip.Driver
 
         private static void UpdatePoiHistoryFromStartToNow()
         {
-            var startDate = new DateTime(2020, 1, 14);
+            var startDate = new DateTime(2020, 2, 1);
             var endDate = DateTime.UtcNow;
             for (var date = startDate; date < endDate; date = date.AddDays(1))
             {
                 CrawlerStorage.UpdateHistory(date).ConfigureAwait(false).GetAwaiter().GetResult();
+                Console.WriteLine($"Finish {date}.");
             }
             Console.WriteLine("Done.");
         }
