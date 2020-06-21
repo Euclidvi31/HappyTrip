@@ -1,7 +1,37 @@
 <!--miniprogram/pages/poi/poi.wxml-->
+<wxs module="m1">
+var timeDetail = function (val) {
+  if (!val) {
+    return false;
+  }
+  
+  var lastTime = getDate(val+'Z');
+  // console.log(lastTime);
+  lastTime = getDate(lastTime - (8*60*60*1000));
+  // console.log(lastTime);
+  var year = lastTime.getFullYear();
+  var month = lastTime.getMonth() + 1;
+  var day = lastTime.getDate();
+
+  var hour = lastTime.getHours();
+  var minute = lastTime.getMinutes();
+  var morafter = '上午';
+  if (hour > 12)
+  {
+    hour = hour - 12;
+    morafter = '下午';
+  }
+  return year+'年'+month+'月'+day+'日 '+morafter+hour+':'+minute;
+};
+
+module.exports = {
+  timeDetail: timeDetail
+}
+</wxs>
+
 <view class="page">
   <view class="poi__hd">
-    <view class="poi__title">迪士尼乐园</view>
+    <view class="poi__title">{{poi.name}}</view>
       <!-- <view class="poi__detail">
         <view class="weui-flex">
           <view class="weui-flex__item"><view class="placeholder">当前客流 : 2007人</view></view>
@@ -9,9 +39,9 @@
         </view>
       </view> -->
     <view class="poi__details">
-      <view class="poi__detail">当前客流 : 2007人</view>
-      <view class="poi__detail">瞬时最大承载量 : 140650人</view>
-      <view class="poi__footer">浦东新区 @ 2020年2月2日 下午2:40</view>
+      <view class="poi__detail">当前客流 : {{poi.trafficNumber}}人</view>
+      <view class="poi__detail">瞬时最大承载量 : {{poi.maxTrafficNumber}}人</view>
+      <view class="poi__footer">{{poi.county}} @ {{m1.timeDetail(poi.refreshAt)}}</view>
     </view>
 
     <!-- <view class="weui-form-preview__ft">
