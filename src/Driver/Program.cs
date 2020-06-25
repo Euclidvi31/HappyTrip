@@ -29,7 +29,7 @@ namespace HappyTrip.Driver
 
         private static void UpdatePoiHistoryFromStartToNow()
         {
-            var startDate = new DateTime(2020, 2, 1);
+            var startDate = new DateTime(2020, 6, 10);
             var endDate = DateTime.UtcNow;
             for (var date = startDate; date < endDate; date = date.AddDays(1))
             {

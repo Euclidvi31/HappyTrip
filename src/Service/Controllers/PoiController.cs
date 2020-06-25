@@ -25,7 +25,7 @@ namespace HappyTrip.Service.Controllers
         [HttpGet]
         public async Task<ActionResult<CollectionResult<Poi>>> List()
         {
-            var pois = await context.Poi.ToListAsync();
+            var pois = await context.Poi.OrderByDescending(p => p.TrafficNumber).ToListAsync();
             return new CollectionResult<Poi>()
             {
                 Value = pois.ToArray(),
@@ -40,8 +40,9 @@ namespace HappyTrip.Service.Controllers
             var historys = await context.PoiHistory
                 .Where(p => p.PoiId == id)
                 .OrderByDescending(p => p.Date)
-                .Take(5)
+                .Take(7)
                 .ToListAsync();
+            historys.Reverse();
             return new PoiDetail
             {
                 Poi = poi,
@@ -57,6 +58,7 @@ namespace HappyTrip.Service.Controllers
                 .OrderByDescending(p => p.Date)
                 .Take(days)
                 .ToListAsync();
+            historys.Reverse();
             return historys.ToArray();
         }
     }
