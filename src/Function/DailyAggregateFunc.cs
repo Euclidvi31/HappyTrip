@@ -14,8 +14,13 @@ namespace HappyTrip.Function
 
             try
             {
-                CrawlerStorage.UpdateHistory(DateTime.UtcNow).ConfigureAwait(false).GetAwaiter().GetResult();
-                log.LogInformation("Data update to database successfully.");
+                var time = DateTime.UtcNow;
+                CrawlerStorage.UpdateHistory(time).ConfigureAwait(false).GetAwaiter().GetResult();
+                log.LogInformation("Traffic data update to database successfully.");
+
+                var crawler = new HolidayCrawler();
+                crawler.UpdateDatabase(time);
+                log.LogInformation("Holiday data update to database successfully.");
             }
             catch (Exception e)
             {

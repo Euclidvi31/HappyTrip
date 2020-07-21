@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200721085633_AddDayInformation.cs" />
+    <Compile Remove="Migrations\20200721085633_AddDayInformation.Designer.cs" />
+    <Compile Remove="Migrations\20200721091400_AddDayInformation.cs" />
+    <Compile Remove="Migrations\20200721091400_AddDayInformation.Designer.cs" />
+    <Compile Remove="Migrations\20200721092017_AddDayInformation.cs" />
+    <Compile Remove="Migrations\20200721092017_AddDayInformation.Designer.cs" />
+    <Compile Remove="Migrations\20200721092959_FixDayInformation.cs" />
+    <Compile Remove="Migrations\20200721092959_FixDayInformation.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.3">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>

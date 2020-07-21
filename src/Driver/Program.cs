@@ -10,7 +10,7 @@ namespace HappyTrip.Driver
     {
         static void Main(string[] args)
         {
-            UpdatePoiHistoryFromStartToNow();
+            UpdateHolidayInformationFromStartToNow();
         }
 
         private static void GetAndUpdatePoiData()
@@ -37,6 +37,26 @@ namespace HappyTrip.Driver
                 Console.WriteLine($"Finish {date}.");
             }
             Console.WriteLine("Done.");
+        }
+
+        private static void UpdateHolidayInformationFromStartToNow()
+        {
+            var startDate = new DateTime(2020, 1, 1);
+            var endDate = DateTime.UtcNow;
+            var crawler = new HolidayCrawler();
+            for (var date = startDate; date < endDate; date = date.AddDays(1))
+            {
+                crawler.UpdateDatabase(date);
+                Console.WriteLine($"Finish {date}.");
+            }
+            Console.WriteLine("Done.");
+        }
+
+        private static void CheckIsHoliday()
+        {
+            var crawler = new HolidayCrawler();
+            var result = crawler.IsHoliday(DateTime.Parse("2020-07-25"));
+            Console.WriteLine($"Is holiday: {result}");
         }
     }
 }

@@ -7,6 +7,8 @@ namespace HappyTrip.Model
         public DbSet<Poi> Poi { get; set; }
         public DbSet<PoiHistory> PoiHistory { get; set; }
 
+        public DbSet<DayInformation> DayInformation { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Server=tcp:happytrip.database.windows.net,1433;Initial Catalog=HappyTrip;Persist Security Info=False;User ID=ysh;Password=huANX903;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
@@ -22,6 +24,10 @@ namespace HappyTrip.Model
             modelBuilder.Entity<Poi>()
                 .HasIndex(p => p.Code)
                 .IsUnique();
+
+            modelBuilder.Entity<DayInformation>()
+                .HasKey(p => p.Date);
+            modelBuilder.Entity<DayInformation>().Property(a => a.Date).ValueGeneratedNever();
         }
     }
 }
