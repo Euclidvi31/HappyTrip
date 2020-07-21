@@ -4,23 +4,23 @@ let chart = null;
 let matrix = [];
 
 function initChart(canvas, width, height, F2) { // 使用 F2 绘制图表
-  console.log(matrix);
-  const data = [
-    { date: '4月1日', total: 20000 },
-    { date: '4月2日', total: 25000 },
-    { date: '4月3日', total: 30000 },
-    { date: '4月4日', total: 28000 },
-    { date: '4月5日', total: 10000 },
-    { date: '4月6日', total: 10000 },
-    { date: '4月7日', total: 10000 },
-  ];
+  // console.log(matrix);
+  // const data = [
+  //   { date: '4月1日', total: 20000 },
+  //   { date: '4月2日', total: 25000 },
+  //   { date: '4月3日', total: 30000 },
+  //   { date: '4月4日', total: 28000 },
+  //   { date: '4月5日', total: 10000 },
+  //   { date: '4月6日', total: 10000 },
+  //   { date: '4月7日', total: 10000 },
+  // ];
   chart = new F2.Chart({
     el: canvas,
     width,
     height
   });
 
-  chart.source(data, {
+  chart.source(matrix, {
     sales: {
       tickCount: 5
     }
