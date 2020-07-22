@@ -38,9 +38,7 @@ steps:
   displayName: Publish
   inputs:
     command: publish
-    projects: |
-      '**/Service.csproj'
-      '**/Function.csproj'
+    projects: '$(projectToBuild)'
     publishWebProjects: False
     arguments: '--configuration $(buildConfiguration) --output "$(build.artifactstagingdirectory)"'
 
