@@ -69,9 +69,9 @@ namespace HappyTrip.Crawler
                 var tripPoi = await context.Poi.FindAsync(26);
                 var disneyPoi = await context.Poi.FindAsync(48);
                 var yioulaiPoi = await context.Poi.FindAsync(44);
-                disneyPoi.TrafficNumber = (int)(tripPoi.TrafficNumber * 0.9);
+                disneyPoi.TrafficNumber = (int)(tripPoi.TrafficNumber * 0.97);
                 disneyPoi.MaxTrafficNumber = 70000;
-                yioulaiPoi.TrafficNumber = (int)(tripPoi.TrafficNumber * 0.1);
+                yioulaiPoi.TrafficNumber = (int)(tripPoi.TrafficNumber * 0.03);
                 yioulaiPoi.MaxTrafficNumber = 16000;
 
                 await context.SaveChangesAsync();
@@ -207,13 +207,13 @@ namespace HappyTrip.Crawler
                 var tripPoi = await context.PoiHistory.FindAsync(26, date);
                 var disneyPoi = await context.PoiHistory.FindAsync(48, date);
                 var yioulaiPoi = await context.PoiHistory.FindAsync(44, date);
-                disneyPoi.MaxTraffic = (int)(tripPoi.MaxTraffic * 0.9);
-                disneyPoi.AvgTraffic = (int)(tripPoi.AvgTraffic * 0.9);
-                disneyPoi.MinTraffic = (int)(tripPoi.MinTraffic * 0.9);
+                disneyPoi.MaxTraffic = (int)(tripPoi.MaxTraffic * 0.97);
+                disneyPoi.AvgTraffic = (int)(tripPoi.AvgTraffic * 0.97);
+                disneyPoi.MinTraffic = (int)(tripPoi.MinTraffic * 0.97);
 
-                yioulaiPoi.MaxTraffic = (int)(tripPoi.MaxTraffic * 0.1);
-                yioulaiPoi.AvgTraffic = (int)(tripPoi.AvgTraffic * 0.1);
-                yioulaiPoi.MinTraffic = (int)(tripPoi.MinTraffic * 0.1);
+                yioulaiPoi.MaxTraffic = (int)(tripPoi.MaxTraffic * 0.03);
+                yioulaiPoi.AvgTraffic = (int)(tripPoi.AvgTraffic * 0.03);
+                yioulaiPoi.MinTraffic = (int)(tripPoi.MinTraffic * 0.03);
                 await context.SaveChangesAsync();
             }
         }

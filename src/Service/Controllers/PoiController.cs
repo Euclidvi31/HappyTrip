@@ -61,5 +61,26 @@ namespace HappyTrip.Service.Controllers
             historys.Reverse();
             return historys.ToArray();
         }
+
+        private bool FilterWithPoiId(int id)
+        {
+            return id == 2  // 上海野生动物园
+                || id == 8  // 上海影视乐园
+                || id == 13 // 上海和平公园
+                || id == 14 // 上海鲁迅公园
+                || id == 16 // 上海田子坊景区
+                || id == 26 // 上海国际旅游度假区
+                || id == 29 // 浦江郊野公园
+                || id == 42 // 上海中心
+                || id == 54 // 上海海洋水族馆
+                || id == 57 // 锦江乐园
+                || id == 64 // 上海动物园
+                || id == 71 // 上海博物馆
+                || id == 72 // 上海自然博物馆（上海科技馆分馆）
+                || id == 73 // 上海科技馆
+                || id == 77 // 上海长风公园
+                || id == 79 // 上海杜莎夫人蜡像馆
+                ;
+        }
     }
 }
