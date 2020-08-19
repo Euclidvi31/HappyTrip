@@ -25,7 +25,10 @@ namespace HappyTrip.Service.Controllers
         [HttpGet]
         public async Task<ActionResult<CollectionResult<Poi>>> List()
         {
-            var pois = await context.Poi.OrderByDescending(p => p.TrafficNumber).ToListAsync();
+            var pois = await context.Poi
+                .Where(p => FilterWithPoiId(p.Id))
+                .OrderByDescending(p => p.TrafficNumber)
+                .ToListAsync();
             return new CollectionResult<Poi>()
             {
                 Value = pois.ToArray(),
@@ -69,7 +72,7 @@ namespace HappyTrip.Service.Controllers
                 || id == 13 // 上海和平公园
                 || id == 14 // 上海鲁迅公园
                 || id == 16 // 上海田子坊景区
-                || id == 26 // 上海国际旅游度假区
+                || id == 48 // 迪士尼乐园
                 || id == 29 // 浦江郊野公园
                 || id == 42 // 上海中心
                 || id == 54 // 上海海洋水族馆
@@ -80,6 +83,10 @@ namespace HappyTrip.Service.Controllers
                 || id == 73 // 上海科技馆
                 || id == 77 // 上海长风公园
                 || id == 79 // 上海杜莎夫人蜡像馆
+                || id == 93 // 上海植物园
+                || id == 109 // 东方明珠广播电视塔
+                || id == 95 // 上海欢乐谷
+                || id == 108 // 上海闵行体育公园
                 ;
         }
     }
