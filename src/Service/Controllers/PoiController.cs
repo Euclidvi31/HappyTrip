@@ -26,7 +26,28 @@ namespace HappyTrip.Service.Controllers
         public async Task<ActionResult<CollectionResult<Poi>>> List()
         {
             var pois = await context.Poi
-                .Where(p => FilterWithPoiId(p.Id))
+                .Where(p =>
+                    p.Id == 2  // 上海野生动物园
+                    || p.Id == 8  // 上海影视乐园
+                    || p.Id == 13 // 上海和平公园
+                    || p.Id == 14 // 上海鲁迅公园
+                    || p.Id == 16 // 上海田子坊景区
+                    || p.Id == 48 // 迪士尼乐园
+                    || p.Id == 29 // 浦江郊野公园
+                    || p.Id == 42 // 上海中心
+                    || p.Id == 54 // 上海海洋水族馆
+                    || p.Id == 57 // 锦江乐园
+                    || p.Id == 64 // 上海动物园
+                    || p.Id == 71 // 上海博物馆
+                    || p.Id == 72 // 上海自然博物馆（上海科技馆分馆）
+                    || p.Id == 73 // 上海科技馆
+                    || p.Id == 77 // 上海长风公园
+                    || p.Id == 79 // 上海杜莎夫人蜡像馆
+                    || p.Id == 93 // 上海植物园
+                    || p.Id == 109 // 东方明珠广播电视塔
+                    || p.Id == 95 // 上海欢乐谷
+                    || p.Id == 108 // 上海闵行体育公园
+                )
                 .OrderByDescending(p => p.TrafficNumber)
                 .ToListAsync();
             return new CollectionResult<Poi>()
