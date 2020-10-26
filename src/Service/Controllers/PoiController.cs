@@ -3,6 +3,7 @@ using HappyTrip.Service.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -84,6 +85,44 @@ namespace HappyTrip.Service.Controllers
                 .ToListAsync();
             historys.Reverse();
             return historys.ToArray();
+        }
+
+        [HttpGet("{id}/forcast/{date}")]
+        public async Task<ForcastResult> GetTraffic(int id, string date)
+        {
+            int intDate = Convert.ToInt32(date);
+            string today = TimeZoneInfo.ConvertTime(DateTime.Now, TimeInfo).ToString("yyyyMMdd");
+            int intToday = Convert.ToInt32(today);
+            int traffic = 0;
+            if (intDate < intToday)
+            {
+                var history = (await context.PoiHistory
+                    .Where(p => p.PoiId == id && p.Date == intDate)
+                    .Take(1)
+                    .ToListAsync())
+                    .First();
+                traffic = history.MaxTraffic;
+            }
+            else
+            {
+                var historys = await context.PoiHistory
+                    .Where(p => p.PoiId == id)
+                    .OrderByDescending(p => p.Date)
+                    .Take(7)
+                    .ToListAsync();
+                int[] units = { 1, 1, 1, 1, 1, 1, 10 };
+                int sum = 0;
+                for (int i = 0; i < 7; i++)
+                {
+                    sum += historys[i].MaxTraffic * units[i];
+                }
+                traffic = sum / units.Sum();
+            }
+            return new ForcastResult
+            {
+                Traffic = traffic,
+                Date = date
+            };
         }
 
         private bool FilterWithPoiId(int id)
