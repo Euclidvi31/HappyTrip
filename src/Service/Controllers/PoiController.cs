@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -51,6 +52,9 @@ namespace HappyTrip.Service.Controllers
                 )
                 .OrderByDescending(p => p.TrafficNumber)
                 .ToListAsync();
+
+            var disneyLand = pois.First(poi => poi.Id == 48);
+            disneyLand.MaxTrafficNumber = 40000;
             return new CollectionResult<Poi>()
             {
                 Value = pois.ToArray(),
@@ -87,17 +91,22 @@ namespace HappyTrip.Service.Controllers
             return historys.ToArray();
         }
 
-        [HttpGet("{id}/forcast/{date}")]
-        public async Task<ForcastResult> GetTraffic(int id, string date)
+        [HttpGet("{id}/forcast/{strTargetDate}")]
+        public async Task<ForcastResult> GetTraffic(int id, string strTargetDate)
         {
-            int intDate = Convert.ToInt32(date);
-            string today = TimeZoneInfo.ConvertTime(DateTime.Now, TimeInfo).ToString("yyyyMMdd");
-            int intToday = Convert.ToInt32(today);
+            DateTime.TryParseExact(strTargetDate.ToString(), "yyyyMMdd",
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None, out var targetDate);
+            int intTargetDate = Convert.ToInt32(strTargetDate);
+            var today = DateTime.Now.Date;
+            string strToday = TimeZoneInfo.ConvertTime(today, TimeInfo).ToString("yyyyMMdd");
+            int intToday = Convert.ToInt32(strToday);
+
             int traffic = 0;
-            if (intDate < intToday)
+            if (intTargetDate < intToday)
             {
                 var history = (await context.PoiHistory
-                    .Where(p => p.PoiId == id && p.Date == intDate)
+                    .Where(p => p.PoiId == id && p.Date == intTargetDate)
                     .Take(1)
                     .ToListAsync())
                     .First();
@@ -105,12 +114,16 @@ namespace HappyTrip.Service.Controllers
             }
             else
             {
+                int deltaDay = (int)(targetDate - today).TotalDays;
+                int delta = (deltaDay / 7 + 1) * 7;
+                var startDate = targetDate.AddDays(-delta);
+                int intStartDate = Convert.ToInt32(TimeZoneInfo.ConvertTime(startDate, TimeInfo).ToString("yyyyMMdd"));
                 var historys = await context.PoiHistory
-                    .Where(p => p.PoiId == id)
+                    .Where(p => p.PoiId == id && p.Date <= intStartDate)
                     .OrderByDescending(p => p.Date)
                     .Take(7)
                     .ToListAsync();
-                int[] units = { 1, 1, 1, 1, 1, 1, 10 };
+                int[] units = { 10, 1, 1, 1, 1, 1, 1 };
                 int sum = 0;
                 for (int i = 0; i < 7; i++)
                 {
@@ -121,7 +134,7 @@ namespace HappyTrip.Service.Controllers
             return new ForcastResult
             {
                 Traffic = traffic,
-                Date = date
+                Date = strTargetDate
             };
         }
 

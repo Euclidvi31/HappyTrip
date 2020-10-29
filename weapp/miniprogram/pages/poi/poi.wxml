@@ -65,17 +65,17 @@ module.exports = {
 
   <view class="data__panel">
     <view class="data__header">
-      <view class="data__content">预估</view>
+      <view class="data__content">预测</view>
     </view>
     <view class="container">
       <view class="forcast_left">
-        <picker class="forcast_left_line" mode="date" value="{{date}}" start="2015-09-01" end="2017-09-01" bindchange="bindDateChange">
+        <picker class="forcast_left_line" mode="date" value="{{date}}" bindchange="bindDateChange">
           <view style="text-align: center;">日期: {{date}}</view>
         </picker>
-        <view class="forcast_left_line" style="text-align: center;">人数: 20000</view>
+        <view class="forcast_left_line" style="text-align: center;">人数: {{traffic}}</view>
       </view>
       <view class="forcast_right">
-        <button style="min-height: 3em; width: 120px; line-height: 3em; " type="default">预测一下</button>
+        <button style="min-height: 3em; width: 120px; line-height: 3em; " type="default" bindtap="forcastClick">预测一下</button>
       </view>
     </view>
   </view>

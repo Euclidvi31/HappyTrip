@@ -39,12 +39,10 @@ function initChart(canvas, width, height, F2) { // 使用 F2 绘制图表
   return chart;
 }
 
-function convertMatrix(input)
-{
+function convertMatrix(input) {
   matrix = [];
   var x;
-  for(x of input)
-  {
+  for (x of input) {
     var dateInt = x.date;
     var dateMonth = dateInt % 10000;
     var month = Math.floor(dateMonth / 100);
@@ -53,7 +51,7 @@ function convertMatrix(input)
     console.log(date);
     var total = x.maxTraffic;
     console.log(total);
-    matrix.push({date: date, total: total});
+    matrix.push({ date: date, total: total });
   }
 }
 
@@ -64,6 +62,8 @@ Page({
    */
   data: {
     date: new Date().toJSON().slice(0, 10),
+    traffic: '-',
+    id: 0,
     poi: {},
     opts: {
       lazyLoad: true
@@ -76,6 +76,7 @@ Page({
   onLoad: function (options) {
     // console.log(options);
     this.loadData(options.id);
+    this.data.id = options.id;
   },
 
   loadData: function (id) {
@@ -96,6 +97,33 @@ Page({
           poi: res.data.poi
         });
         //console.log(matrix);
+      }
+    })
+  },
+
+  bindDateChange: function (e) {
+    // console.log('picker发送选择改变，携带值为', e.detail.value);
+    this.setData({
+      date: e.detail.value
+    });
+    // var dateString = this.data.date.replace(/-/g, '');
+    // console.log(typeof this.data.date);
+    // console.log(dateString);
+  },
+
+  forcastClick: function () {
+    var dateString = this.data.date.replace(/-/g, '');
+    var self = this;
+    wx.request({
+      url: 'https://happytripservice.azurewebsites.net/api/poi/' + self.data.id + '/forcast/' + dateString,
+      header: {
+        'content-type': 'application/json'
+      },
+      success(res) {
+        console.log(res);
+        self.setData({
+          traffic: res.data.traffic
+        });
       }
     })
   },
