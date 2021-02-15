@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace HappyTrip.Model
 {
@@ -8,6 +9,13 @@ namespace HappyTrip.Model
         public DbSet<PoiHistory> PoiHistory { get; set; }
 
         public DbSet<DayInformation> DayInformation { get; set; }
+
+        public PoiContext() : base()
+        { }
+
+        public PoiContext(DbContextOptions<PoiContext> options) : base(options)
+        {
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -24,6 +32,10 @@ namespace HappyTrip.Model
             modelBuilder.Entity<Poi>()
                 .HasIndex(p => p.Code)
                 .IsUnique();
+
+            modelBuilder.Entity<PoiHistory>()
+                .HasOne(h => h.Poi)
+                .WithMany(p => p.History);
 
             modelBuilder.Entity<DayInformation>()
                 .HasKey(p => p.Date);

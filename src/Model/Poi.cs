@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -53,5 +54,7 @@ namespace HappyTrip.Model
         // SSD
         [MaxLength(8)]
         public string Comfort { get; set; }
+
+        public List<PoiHistory> History { get; set; }
     }
 }

@@ -1,5 +1,5 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace HappyTrip.Model
 {
@@ -22,5 +22,8 @@ namespace HappyTrip.Model
 
         [MaxLength(20)]
         public string Whether { get; set; }
+
+        [JsonIgnore]
+        public Poi Poi { get; set; }
     }
 }

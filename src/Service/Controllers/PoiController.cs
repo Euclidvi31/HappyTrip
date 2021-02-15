@@ -2,8 +2,8 @@
 using HappyTrip.Service.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,41 +15,52 @@ namespace HappyTrip.Service.Controllers
     [Route("api/[controller]")]
     public class PoiController : Controller
     {
+        private const int HistorySize = 7;
         private static readonly TimeZoneInfo TimeInfo = TimeZoneInfo.CreateCustomTimeZone("ShanghaiTime", new TimeSpan(08, 00, 00), "ShanghaiTime", "ShanghaiTime");
         private readonly PoiContext context;
+        private readonly ILogger<PoiController> logger;
 
-        public PoiController(PoiContext context)
+        public PoiController(PoiContext context, ILogger<PoiController> logger)
         {
             this.context = context;
+            this.logger = logger;
         }
 
         // GET: api/<controller>
         [HttpGet]
-        public async Task<ActionResult<CollectionResult<Poi>>> List()
+        public async Task<ActionResult<CollectionResult<Poi>>> List([FromQuery(Name = "includeHistory")] bool includeHistory = false)
         {
-            var pois = await context.Poi
-                .Where(p =>
-                    p.Id == 2  // 上海野生动物园
-                    || p.Id == 8  // 上海影视乐园
-                    || p.Id == 13 // 上海和平公园
-                    || p.Id == 14 // 上海鲁迅公园
-                    || p.Id == 16 // 上海田子坊景区
-                    || p.Id == 48 // 迪士尼乐园
-                    || p.Id == 29 // 浦江郊野公园
-                    || p.Id == 42 // 上海中心
-                    || p.Id == 54 // 上海海洋水族馆
-                    || p.Id == 57 // 锦江乐园
-                    || p.Id == 64 // 上海动物园
-                    || p.Id == 71 // 上海博物馆
-                    || p.Id == 72 // 上海自然博物馆（上海科技馆分馆）
-                    || p.Id == 73 // 上海科技馆
-                    || p.Id == 77 // 上海长风公园
-                    || p.Id == 79 // 上海杜莎夫人蜡像馆
-                    || p.Id == 93 // 上海植物园
-                    || p.Id == 109 // 东方明珠广播电视塔
-                    || p.Id == 95 // 上海欢乐谷
-                    || p.Id == 108 // 上海闵行体育公园
-                )
+            var query = context.Poi.Where(p =>
+                p.Id == 2  // 上海野生动物园
+                || p.Id == 8  // 上海影视乐园
+                || p.Id == 13 // 上海和平公园
+                || p.Id == 14 // 上海鲁迅公园
+                || p.Id == 16 // 上海田子坊景区
+                || p.Id == 48 // 迪士尼乐园
+                || p.Id == 29 // 浦江郊野公园
+                || p.Id == 42 // 上海中心
+                || p.Id == 54 // 上海海洋水族馆
+                || p.Id == 57 // 锦江乐园
+                || p.Id == 64 // 上海动物园
+                || p.Id == 71 // 上海博物馆
+                || p.Id == 72 // 上海自然博物馆（上海科技馆分馆）
+                || p.Id == 73 // 上海科技馆
+                || p.Id == 77 // 上海长风公园
+                || p.Id == 79 // 上海杜莎夫人蜡像馆
+                || p.Id == 93 // 上海植物园
+                || p.Id == 109 // 东方明珠广播电视塔
+                || p.Id == 95 // 上海欢乐谷
+                || p.Id == 108 // 上海闵行体育公园
+            );
+
+            if (includeHistory)
+            {
+                query = query.Include(p => p.History
+                    .OrderBy(h => h.Date)
+                    .Take(HistorySize));
+            }
+            
+            var pois = await query
                 .OrderByDescending(p => p.TrafficNumber)
                 .ToListAsync();
 
@@ -69,7 +80,7 @@ namespace HappyTrip.Service.Controllers
             var historys = await context.PoiHistory
                 .Where(p => p.PoiId == id)
                 .OrderByDescending(p => p.Date)
-                .Take(7)
+                .Take(HistorySize)
                 .ToListAsync();
             historys.Reverse();
             return new PoiDetail
