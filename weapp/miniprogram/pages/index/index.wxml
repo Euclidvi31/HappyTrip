@@ -50,7 +50,7 @@ module.exports = {
 </wxs>
 
 <view>
-  <view class="weui-search-bar">
+  <!--<view class="weui-search-bar">
     <view class="weui-search-bar__form">
         <view class="weui-search-bar__box">
             <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
@@ -65,7 +65,7 @@ module.exports = {
         </label>
     </view>
     <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="hideInput">取消</view>
-  </view>
+  </view>-->
   <view class="list">
     <!-- <i-card id="1" title="迪士尼乐园" extra="1小时前" thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
       <view slot="content">2007人 / 140650 人</view>

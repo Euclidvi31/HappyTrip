@@ -1,5 +1,7 @@
 //index.js
-const app = getApp()
+const app = getApp();
+const db = wx.cloud.database();
+const _ = db.command;
 
 Page({
   data: {
@@ -29,18 +31,19 @@ Page({
 
   loadData: function() {
     var self = this;
-    wx.request({
-      url: 'https://happytripservice.azurewebsites.net/api/poi',
-      header: {
-        'content-type': 'application/json' 
-      },
-      success(res) {
-        //console.log(res.data.value);
+    db.collection('Poi')
+      .field(
+        {
+          _id: false,
+          history: false
+        })
+      .orderBy('trafficNumber', 'desc')
+      .get()
+      .then(res =>{
         self.setData({
-          'pois': res.data.value
+          'pois': res.data
         });
         wx.stopPullDownRefresh();
-      }
-    })
+      })
   },
 })

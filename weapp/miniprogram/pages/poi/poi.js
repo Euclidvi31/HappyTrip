@@ -1,5 +1,7 @@
 // miniprogram/pages/poi/poi.js
 const F2 = require('@antv/wx-f2');
+const db = wx.cloud.database();
+const _ = db.command;
 let chart = null;
 let matrix = [];
 
@@ -79,26 +81,19 @@ Page({
     this.data.id = options.id;
   },
 
-  loadData: function (id) {
+  loadData: function(id) {
     var self = this;
-    wx.request({
-      url: 'https://happytripservice.azurewebsites.net/api/poi/' + id,
-      header: {
-        'content-type': 'application/json'
-      },
-      success(res) {
-        // console.log(res);
+    db.collection('Poi').doc(Number(id)).get()
+      .then(res => {
         matrix = res.data.history;
         convertMatrix(res.data.history);
         self.chartComponent = self.selectComponent('#column-dom');
         self.chartComponent.init(initChart);
 
         self.setData({
-          poi: res.data.poi
+          poi: res.data
         });
-        //console.log(matrix);
-      }
-    })
+      });
   },
 
   bindDateChange: function (e) {

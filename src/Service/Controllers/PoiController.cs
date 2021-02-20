@@ -56,7 +56,7 @@ namespace HappyTrip.Service.Controllers
             if (includeHistory)
             {
                 query = query.Include(p => p.History
-                    .OrderBy(h => h.Date)
+                    .OrderByDescending(h => h.Date)
                     .Take(HistorySize));
             }
             
@@ -64,6 +64,10 @@ namespace HappyTrip.Service.Controllers
                 .OrderByDescending(p => p.TrafficNumber)
                 .ToListAsync();
 
+            pois.ForEach(p =>
+            {
+                p.History.Reverse();
+            });
             var disneyLand = pois.First(poi => poi.Id == 48);
             disneyLand.MaxTrafficNumber = 40000;
             return new CollectionResult<Poi>()

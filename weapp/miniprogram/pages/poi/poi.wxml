@@ -55,7 +55,7 @@ module.exports = {
   <view class="data__panel">
     <view class="graph__panel">
       <view class="data__header">
-          <view class="data__content">历史5天</view>
+          <view class="data__content">历史7天</view>
       </view>
       <view class="container">
         <ff-canvas id="column-dom" canvas-id="column" opts="{{ opts }}"></ff-canvas>
