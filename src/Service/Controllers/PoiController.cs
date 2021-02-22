@@ -64,10 +64,13 @@ namespace HappyTrip.Service.Controllers
                 .OrderByDescending(p => p.TrafficNumber)
                 .ToListAsync();
 
-            pois.ForEach(p =>
+            if (includeHistory)
             {
-                p.History.Reverse();
-            });
+                pois.ForEach(p =>
+                {
+                    p.History.Reverse();
+                });
+            }
             var disneyLand = pois.First(poi => poi.Id == 48);
             disneyLand.MaxTrafficNumber = 40000;
             return new CollectionResult<Poi>()
