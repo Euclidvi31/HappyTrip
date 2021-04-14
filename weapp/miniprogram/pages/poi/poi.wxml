@@ -30,20 +30,21 @@ module.exports = {
 </wxs>
 
 <view class="page">
-  <view class="poi__hd">
-    <view class="poi__title">{{poi.name}}</view>
-      <!-- <view class="poi__detail">
-        <view class="weui-flex">
-          <view class="weui-flex__item"><view class="placeholder">当前客流 : 2007人</view></view>
-          <view class="weui-flex__item"><view class="placeholder">瞬时最大承载量 : 140650人</view></view>
-        </view>
-      </view> -->
-    <view class="poi__details">
-      <view class="poi__detail">当前客流 : {{poi.trafficNumber}}人</view>
-      <view class="poi__detail">瞬时最大承载量 : {{poi.maxTrafficNumber}}人</view>
-      <view class="poi__footer">{{poi.county}} @ {{m1.timeDetail(poi.refreshAt)}}</view>
+  <view class="poi__hd" style="background: url({{poi.background}}); background-size: cover;">
+    <view class="poi__content" style="background: {{poi.background ? 'rgba(255,255,255,0.2)' : '#fff'}}">
+      <view class="poi__title">{{poi.name}}</view>
+        <!-- <view class="poi__detail">
+          <view class="weui-flex">
+            <view class="weui-flex__item"><view class="placeholder">当前客流 : 2007人</view></view>
+            <view class="weui-flex__item"><view class="placeholder">瞬时最大承载量 : 140650人</view></view>
+          </view>
+        </view> -->
+      <view class="poi__details">
+        <view class="poi__detail">当前客流 : {{poi.trafficNumber}}人</view>
+        <!-- <view class="poi__detail">瞬时最大承载量 : {{poi.maxTrafficNumber}}人</view> -->
+        <view class="poi__footer">{{poi.county}} @ {{m1.timeDetail(poi.refreshAt)}}</view>
+      </view>
     </view>
-
     <!-- <view class="weui-form-preview__ft">
       <picker class="time__picker" mode="date" value="{{date}}" start="2015-09-01" end="2017-09-01" bindchange="bindDateChange">
         <!-- <button class="weui-form-preview__btn weui-form-preview__btn_primary" type="default">日期选择器</button> -->

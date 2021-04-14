@@ -31,9 +31,7 @@ namespace HappyTrip.Service.Controllers
         public async Task<ActionResult<CollectionResult<Poi>>> List([FromQuery(Name = "includeHistory")] bool includeHistory = false)
         {
             var query = context.Poi.Where(p =>
-                p.Id == 2  // 上海野生动物园
-                || p.Id == 8  // 上海影视乐园
-                || p.Id == 13 // 上海和平公园
+                p.Id == 1  // 上海野生动物园
                 || p.Id == 14 // 上海鲁迅公园
                 || p.Id == 16 // 上海田子坊景区
                 || p.Id == 48 // 迪士尼乐园
@@ -59,9 +57,11 @@ namespace HappyTrip.Service.Controllers
                     .OrderByDescending(h => h.Date)
                     .Take(HistorySize));
             }
-            
+
             var pois = await query
-                .OrderByDescending(p => p.TrafficNumber)
+                .OrderByDescending(p => p.RefreshAt.Date)
+                .ThenByDescending(p => p.TrafficNumber)
+                .ThenByDescending(p => p.MaxTrafficNumber)
                 .ToListAsync();
 
             if (includeHistory)
@@ -73,6 +73,8 @@ namespace HappyTrip.Service.Controllers
             }
             var disneyLand = pois.First(poi => poi.Id == 48);
             disneyLand.MaxTrafficNumber = 40000;
+            pois.Remove(disneyLand);
+            pois.Insert(0, disneyLand);
             return new CollectionResult<Poi>()
             {
                 Value = pois.ToArray(),
@@ -158,9 +160,7 @@ namespace HappyTrip.Service.Controllers
 
         private bool FilterWithPoiId(int id)
         {
-            return id == 2  // 上海野生动物园
-                || id == 8  // 上海影视乐园
-                || id == 13 // 上海和平公园
+            return id == 1  // 上海野生动物园
                 || id == 14 // 上海鲁迅公园
                 || id == 16 // 上海田子坊景区
                 || id == 48 // 迪士尼乐园

@@ -8,9 +8,14 @@ page {
 }
 
 .poi__hd {
-	background: #fff;
-  padding: 30px 30px 0px 30px;
+	background: rgba(0,0,0,0);
+  /* padding: 30px 30px 0px 30px; */
   margin-bottom: 8px;
+}
+
+.poi__content {
+  background:rgba(255,255,255,0.2);
+  padding: 30px 30px 0px 30px;
 }
 
 .poi__title {
@@ -32,7 +37,7 @@ page {
 .poi__footer {
   font-size: 12px;
   margin-top: 5px;
-  color: #888888;
+  /* color: #000000; */
   text-align: left;
 }
 

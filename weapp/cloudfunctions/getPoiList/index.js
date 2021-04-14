@@ -17,6 +17,14 @@ exports.main = async (event, context) => {
   // console.log(result);
   result.value.forEach(function(poi) {
     var id = poi.id;
+    if (id == 48)
+    {
+      poi.background = 'https://7973-yshlaptop-1301185334.tcb.qcloud.la/backgrounds/disney.webp?sign=96fff8c05bc48fb37762216d493da0ab&t=1614698724';
+    }
+    else if (id == 95)
+    {
+      poi.background = 'https://7973-yshlaptop-1301185334.tcb.qcloud.la/backgrounds/huanlegu.webp?sign=00fc70f52811e515b73d85fb75d4f484&t=1614864067';
+    }
     db.collection('Poi').doc(id)
       .set({
           data: poi

@@ -50,9 +50,9 @@ function convertMatrix(input) {
     var month = Math.floor(dateMonth / 100);
     var day = dateMonth % 100;
     var date = month + '月' + day + '日';
-    console.log(date);
+    // console.log(date);
     var total = x.maxTraffic;
-    console.log(total);
+    // console.log(total);
     matrix.push({ date: date, total: total });
   }
 }
@@ -63,7 +63,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    date: new Date().toJSON().slice(0, 10),
+    date: new Date(new Date().getTime() + 86400000).toJSON().slice(0, 10),
     traffic: '-',
     id: 0,
     poi: {},
@@ -109,17 +109,39 @@ Page({
   forcastClick: function () {
     var dateString = this.data.date.replace(/-/g, '');
     var self = this;
-    wx.request({
-      url: 'https://happytripservice.azurewebsites.net/api/poi/' + self.data.id + '/forcast/' + dateString,
-      header: {
-        'content-type': 'application/json'
+
+    wx.showLoading({title: '加载中', mask:true});
+    let res = wx.cloud.callFunction({
+      name:"forcastPoi",
+      data:{    //传递
+        id: self.data.id,
+        dateString: dateString
       },
-      success(res) {
-        console.log(res);
+      success: res => {
+        // console.log(res);
         self.setData({
-          traffic: res.data.traffic
+          traffic: res.result.traffic
+        });
+      },
+      complete: res => {
+        wx.hideLoading({
+          success: (res) => {},
         });
       }
-    })
+    });
+  },
+
+  onShareAppMessage: function () {
+    return {
+      title: poi.name + ' 当前客流 ' + poi.traffic,
+      path: '/pages/poi/poi?id=' + poi.id
+    }
+  },
+
+  onShareTimeline: function() {
+    return {
+      title: poi.name + ' 当前客流 ' + poi.traffic,
+      query: '?id=' + poi.id
+    }
   },
 })

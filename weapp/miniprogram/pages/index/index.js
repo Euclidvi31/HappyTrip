@@ -25,6 +25,7 @@ Page({
   },
 
   onPullDownRefresh: function () {
+    wx.showLoading({title: '加载中', mask:true});
     this.loadData();
     //console.log("Refresh done.");
   },
@@ -44,6 +45,16 @@ Page({
           'pois': res.data
         });
         wx.stopPullDownRefresh();
+        wx.hideLoading({
+          success: (res) => {},
+        });
       })
+  },
+
+  onShareAppMessage: function () {
+    return {
+      // title: poi.name + ' 当前客流 ' + poi.traffic,
+      path: '/pages/index/index'
+    }
   },
 })
